@@ -1,22 +1,15 @@
-from PyQt5.QtWidgets import QApplication
-from PyQt5.QtWidgets import QMainWindow
-from PyQt5.QtWidgets import QAction
-from PyQt5.QtWidgets import QMenuBar
-from PyQt5.QtWidgets import QMdiArea
-from PyQt5.QtWidgets import QMdiSubWindow
-from PyQt5.QtWidgets import QProxyStyle
-from PyQt5.QtWidgets import QStyle
+from PyQt5.QtWidgets import *
 from PyQt5.QtGui import QIcon
 from PyQt5.QtGui import QPainter
 from PyQt5.QtGui import QPalette
 from PyQt5.QtGui import QPixmap
 from PyQt5.QtCore import Qt
 
-
 import sys
 from random import randint
 
 from Browser_Tabbed import browser_tabbed
+from Browser_Tabbed import titanium
 from Calculator import calculator
 from Notepad import notepad
 from Paint import paint
@@ -71,6 +64,17 @@ class Desktop(QMainWindow):
         sub = QMdiSubWindow()
         sub.setWidget(browser_tabbed.MainWindow())
         sub.setWindowTitle("Browser")
+        self.mdi.addSubWindow(sub)
+        widget_position = sub.pos()
+        widget_dimensions = sub.frameGeometry()
+        self.check_position(y=widget_position.y(), width=widget_dimensions.width(), height=widget_dimensions.height(), sub_window=sub)
+        sub.show()
+
+    def open_titanium(self):
+        print("Opening Titanium")
+        sub = QMdiSubWindow()
+        sub.setWidget(titanium.MainWindow())
+        sub.setWindowTitle("Titanium")
         self.mdi.addSubWindow(sub)
         widget_position = sub.pos()
         widget_dimensions = sub.frameGeometry()
@@ -140,6 +144,7 @@ class Desktop(QMainWindow):
         self.setWindowTitle(self.title)
         self.setGeometry(self.left, self.top, self.width, self.height)
 
+    # noinspection PyUnresolvedReferences
     def create_menu(self):
         menu = QMenuBar(self)
         menu.setNativeMenuBar(False)
@@ -151,6 +156,10 @@ class Desktop(QMainWindow):
         browser = QAction(QIcon("browser.jpeg"), "Boron", self)
         browser.setShortcut("Ctrl+B")
         browser.setStatusTip("Open Browser")
+
+        titanium = QAction(QIcon("Titanium.png"), "Titanium", self)
+        titanium.setShortcut("Ctrl+T")
+        titanium.setStatusTip("Open Titanium")
 
         calculator = QAction(QIcon("Calculator.jpeg"), "Cobalt", self)
         calculator.setShortcut("Ctrl+C")
@@ -170,6 +179,7 @@ class Desktop(QMainWindow):
 
         menu.addAction(exitButton)
         menu.addAction(browser)
+        menu.addAction(titanium)
         menu.addAction(calculator)
         menu.addAction(notepad)
         menu.addAction(paint)
@@ -177,6 +187,7 @@ class Desktop(QMainWindow):
 
         exitButton.triggered.connect(self.close_desktop)
         browser.triggered.connect(self.open_browser)
+        titanium.triggered.connect(self.open_titanium)
         calculator.triggered.connect(self.open_calculator)
         notepad.triggered.connect(self.open_notepad)
         paint.triggered.connect(self.open_paint)
@@ -197,10 +208,21 @@ class Desktop(QMainWindow):
 
 
 if __name__ == '__main__':
+    inputted_style = input("Please Enter a Style: ")
+
     app = QApplication(sys.argv)
     ex = Desktop()
     ex.create_mdi()
     ex.create_menu()
-    my_style = MyProxyStyle("Fusion")
+    my_style = None
+    if inputted_style in ["Windows", "Fusion"]:
+        my_style = MyProxyStyle(inputted_style)
+    elif inputted_style == "":
+        my_style = MyProxyStyle("Fusion")
+    else:
+        print("""
+Invalid Style
+Valid Styles: Windows and Fusion""")
+        exit(1)
     app.setStyle(my_style)
     app.exec_()

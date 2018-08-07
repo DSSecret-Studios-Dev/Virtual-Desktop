@@ -452,14 +452,10 @@ class MainWindow(QMainWindow):
         self.animation_event_cover = AnimationCover()
         self.scene.addItem(self.animation_event_cover)
 
-        # Old Menu Bar
-        # menu = self.menuBar().addMenu("&Game")
-
         menu = self.menuBar()
         menu.setNativeMenuBar(False)
-        menu.addMenu("&Game")
 
-        deal_action = QAction(QIcon(os.path.join('./Solitaire/images', 'playing-card.png')), "Deal...", self)
+        deal_action = QAction("Deal", self)
         deal_action.triggered.connect(self.restart_game)
         menu.addAction(deal_action)
 
@@ -507,10 +503,6 @@ class MainWindow(QMainWindow):
         roundgroup.setExclusive(True)
 
         menu.addSeparator()
-
-        quit_action = QAction("Quit", self)
-        quit_action.triggered.connect(self.quit)
-        menu.addAction(quit_action)
 
         self.deck = []
         self.deal_n = 3  # Number of cards to deal each time

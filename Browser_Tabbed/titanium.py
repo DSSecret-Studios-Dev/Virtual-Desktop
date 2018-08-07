@@ -113,7 +113,7 @@ class MainWindow(QMainWindow):
         navtb.addAction(stop_btn)
 
         # Uncomment to disable native menubar on Mac
-        # self.menuBar().setNativeMenuBar(False)
+        self.menuBar().setNativeMenuBar(False)
 
         file_menu = self.menuBar().addMenu("&File")
 
