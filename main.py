@@ -17,9 +17,10 @@ from Solitaire import solitaire
 
 
 class MDIArea(QMdiArea):
-    def __init__(self, background_pixmap, parent = None):
-        QMdiArea.__init__(self, parent)
-        self.background_pixmap = background_pixmap
+    def __init__(self, *args, **kwargs):
+        super(MDIArea, self).__init__(*args, **kwargs)
+        self.parent = args[0]
+        self.background_pixmap = self.parent.pixmap
         self.centered = False
         self.display_pixmap = None
 
@@ -36,9 +37,9 @@ class MDIArea(QMdiArea):
         painter.end()
 
     def resizeEvent(self, event):
-        global ex
-        self.display_pixmap = self.background_pixmap.scaled(ex.window_width(), ex.window_height(), Qt.KeepAspectRatio)
-
+        self.display_pixmap = self.background_pixmap.scaled(self.parent.window_width(),
+                                                            self.parent.window_height(),
+                                                            Qt.KeepAspectRatio)
 
 class MyProxyStyle(QProxyStyle):
     def pixelMetric(self, QStyle_PixelMetric, option=None, widget=None):
@@ -49,10 +50,14 @@ class MyProxyStyle(QProxyStyle):
 
 
 class Desktop(QMainWindow):
-    def check_position(self, y, width, height, sub_window):
-        if y <= 40:
-            sub_window.move(randint(0, self.width - width), randint(0, self.height - height))
-            print("Sub Window Moved")
+    def check_position(self, width, sub_window):
+        if width < 500:
+            sub_window.move(randint(0, self.window_width()-(int(self.window_width()/2))),
+                            randint(0, self.window_height()-(int(self.window_height()/2))) )
+        else:
+            sub_window.move(randint(0, self.window_width()-(int(self.window_width()/1.5))),
+                            randint(0, self.window_height()-(int(self.window_height()/1.5))) )
+        print("Sub Window Moved")
 
     @staticmethod
     def close_desktop():
@@ -65,9 +70,8 @@ class Desktop(QMainWindow):
         sub.setWidget(browser_tabbed.MainWindow())
         sub.setWindowTitle("Browser")
         self.mdi.addSubWindow(sub)
-        widget_position = sub.pos()
         widget_dimensions = sub.frameGeometry()
-        self.check_position(y=widget_position.y(), width=widget_dimensions.width(), height=widget_dimensions.height(), sub_window=sub)
+        self.check_position(width=widget_dimensions.width(), sub_window=sub)
         sub.show()
 
     def open_titanium(self):
@@ -76,9 +80,8 @@ class Desktop(QMainWindow):
         sub.setWidget(titanium.MainWindow())
         sub.setWindowTitle("Titanium")
         self.mdi.addSubWindow(sub)
-        widget_position = sub.pos()
         widget_dimensions = sub.frameGeometry()
-        self.check_position(y=widget_position.y(), width=widget_dimensions.width(), height=widget_dimensions.height(), sub_window=sub)
+        self.check_position(width=widget_dimensions.width(), sub_window=sub)
         sub.show()
 
     def open_calculator(self):
@@ -87,9 +90,8 @@ class Desktop(QMainWindow):
         sub.setWidget(calculator.MainWindow())
         sub.setWindowTitle("Calculator")
         self.mdi.addSubWindow(sub)
-        widget_position = sub.pos()
         widget_dimensions = sub.frameGeometry()
-        self.check_position(y=widget_position.y(), width=widget_dimensions.width(), height=widget_dimensions.height(), sub_window=sub)
+        self.check_position(width=widget_dimensions.width(), sub_window=sub)
         sub.show()
 
     def open_notepad(self):
@@ -98,9 +100,8 @@ class Desktop(QMainWindow):
         sub.setWidget(notepad.MainWindow())
         sub.setWindowTitle("Notepad")
         self.mdi.addSubWindow(sub)
-        widget_position = sub.pos()
         widget_dimensions = sub.frameGeometry()
-        self.check_position(y=widget_position.y(), width=widget_dimensions.width(), height=widget_dimensions.height(), sub_window=sub)
+        self.check_position(width=widget_dimensions.width(), sub_window=sub)
         sub.show()
 
     def open_paint(self):
@@ -109,9 +110,8 @@ class Desktop(QMainWindow):
         sub.setWidget(paint.MainWindow())
         sub.setWindowTitle("Paint")
         self.mdi.addSubWindow(sub)
-        widget_position = sub.pos()
         widget_dimensions = sub.frameGeometry()
-        self.check_position(y=widget_position.y(), width=widget_dimensions.width(), height=widget_dimensions.height(), sub_window=sub)
+        self.check_position(width=widget_dimensions.width(), sub_window=sub)
         sub.show()
 
     def open_solitaire(self):
@@ -120,9 +120,8 @@ class Desktop(QMainWindow):
         sub.setWidget(solitaire.MainWindow())
         sub.setWindowTitle("Solitaire")
         self.mdi.addSubWindow(sub)
-        widget_position = sub.pos()
         widget_dimensions = sub.frameGeometry()
-        self.check_position(y=widget_position.y(), width=widget_dimensions.width(), height=widget_dimensions.height(), sub_window=sub)
+        self.check_position(width=widget_dimensions.width(), sub_window=sub)
         sub.show()
 
     def __init__(self):
@@ -138,6 +137,16 @@ class Desktop(QMainWindow):
         self.left = 10
         self.top = 10
         self.initUI()
+        self.create_mdi()
+        self.create_menu()
+
+        self.center_widget = QWidget(self)
+        layout = QVBoxLayout()
+        layout.addWidget(self.menu)
+        layout.addWidget(self.mdi)
+        self.center_widget.setLayout(layout)
+        self.setCentralWidget(self.center_widget)
+
         self.show()
 
     def initUI(self):
@@ -146,8 +155,8 @@ class Desktop(QMainWindow):
 
     # noinspection PyUnresolvedReferences
     def create_menu(self):
-        menu = QMenuBar(self)
-        menu.setNativeMenuBar(False)
+        self.menu = QMenuBar(self)
+        self.menu.setNativeMenuBar(False)
 
         exitButton = QAction(QIcon("Power.jpeg"), "Exit", self)
         exitButton.setShortcut("Ctrl+Q")
@@ -177,13 +186,13 @@ class Desktop(QMainWindow):
         solitaire.setShortcut("Ctrl+S")
         solitaire.setStatusTip("Open Solitaire")
 
-        menu.addAction(exitButton)
-        menu.addAction(browser)
-        menu.addAction(titanium)
-        menu.addAction(calculator)
-        menu.addAction(notepad)
-        menu.addAction(paint)
-        menu.addAction(solitaire)
+        self.menu.addAction(exitButton)
+        self.menu.addAction(browser)
+        self.menu.addAction(titanium)
+        self.menu.addAction(calculator)
+        self.menu.addAction(notepad)
+        self.menu.addAction(paint)
+        self.menu.addAction(solitaire)
 
         exitButton.triggered.connect(self.close_desktop)
         browser.triggered.connect(self.open_browser)
@@ -202,8 +211,7 @@ class Desktop(QMainWindow):
     def create_mdi(self):
         self.pixmap = QPixmap()
         self.pixmap.load("mt-mckinley.jpg")
-        self.mdi = MDIArea(self.pixmap)
-        self.setCentralWidget(self.mdi)
+        self.mdi = MDIArea(self)
         self.mdi.cascadeSubWindows()
 
 
@@ -212,8 +220,6 @@ if __name__ == '__main__':
 
     app = QApplication(sys.argv)
     ex = Desktop()
-    ex.create_mdi()
-    ex.create_menu()
     my_style = None
     if inputted_style in ["Windows", "Fusion"]:
         my_style = MyProxyStyle(inputted_style)
