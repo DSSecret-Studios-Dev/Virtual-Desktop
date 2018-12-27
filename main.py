@@ -218,8 +218,8 @@ class Desktop(QMainWindow):
 
 if __name__ == '__main__':
     available_styles = QStyleFactory.keys()
-    print(available_styles)
-    inputted_style = input("Please Enter a Style (Windows or Fusion): ")
+    print("The available styles are: " + str(available_styles) + ".")
+    inputted_style = input("Please Enter a Style: ")
 
     app = QApplication(sys.argv)
     ex = Desktop()
