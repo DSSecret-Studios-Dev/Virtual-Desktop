@@ -41,6 +41,7 @@ class MDIArea(QMdiArea):
                                                             self.parent.window_height(),
                                                             Qt.KeepAspectRatio)
 
+
 class MyProxyStyle(QProxyStyle):
     def pixelMetric(self, QStyle_PixelMetric, option=None, widget=None):
         if QStyle_PixelMetric == QStyle.PM_SmallIconSize:
@@ -158,31 +159,31 @@ class Desktop(QMainWindow):
         self.menu = QMenuBar(self)
         self.menu.setNativeMenuBar(False)
 
-        exitButton = QAction(QIcon("Power.jpeg"), "Exit", self)
+        exitButton = QAction(QIcon("power.png"), "Exit", self)
         exitButton.setShortcut("Ctrl+Q")
         exitButton.setStatusTip("Power Off")
 
-        browser = QAction(QIcon("browser.jpeg"), "Boron", self)
+        browser = QAction(QIcon("browser.png"), "Boron", self)
         browser.setShortcut("Ctrl+B")
         browser.setStatusTip("Open Browser")
 
-        titanium = QAction(QIcon("Titanium.png"), "Titanium", self)
+        titanium = QAction(QIcon("titanium.png"), "Titanium", self)
         titanium.setShortcut("Ctrl+T")
         titanium.setStatusTip("Open Titanium")
 
-        calculator = QAction(QIcon("Calculator.jpeg"), "Cobalt", self)
+        calculator = QAction(QIcon("calculator.png"), "Cobalt", self)
         calculator.setShortcut("Ctrl+C")
         calculator.setStatusTip("Open Calculator")
 
-        notepad = QAction(QIcon("Notepad.png"), "Neon", self)
+        notepad = QAction(QIcon("notepad.png"), "Neon", self)
         notepad.setShortcut("Ctrl+N")
         notepad.setStatusTip("Open Notepad")
 
-        paint = QAction(QIcon("Paint.png"), "Paint", self)
+        paint = QAction(QIcon("paint.png"), "Paint", self)
         paint.setShortcut("Ctrl+P")
         paint.setStatusTip("Open Paint")
 
-        solitaire = QAction(QIcon("Solitaire.jpeg"), "Xenon", self)
+        solitaire = QAction(QIcon("solitaire.png"), "Xenon", self)
         solitaire.setShortcut("Ctrl+S")
         solitaire.setStatusTip("Open Solitaire")
 
@@ -210,21 +211,23 @@ class Desktop(QMainWindow):
 
     def create_mdi(self):
         self.pixmap = QPixmap()
-        self.pixmap.load("mt-mckinley.jpg")
+        self.pixmap.load("mt-mckinley.jpg")  # Change this to change the background photo
         self.mdi = MDIArea(self)
         self.mdi.cascadeSubWindows()
 
 
 if __name__ == '__main__':
+    available_styles = QStyleFactory.keys()
+    print(available_styles)
     inputted_style = input("Please Enter a Style (Windows or Fusion): ")
 
     app = QApplication(sys.argv)
     ex = Desktop()
     my_style = None
-    if inputted_style in ["Windows", "Fusion"]:
+    if inputted_style in available_styles:
         my_style = MyProxyStyle(inputted_style)
     elif inputted_style == "":
-        my_style = MyProxyStyle("Fusion")
+        my_style = MyProxyStyle("")
     else:
         print("""
 Invalid Style
