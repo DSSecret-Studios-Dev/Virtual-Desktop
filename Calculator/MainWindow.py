@@ -315,8 +315,9 @@ class Ui_MainWindow(object):
         self.pushButton_pc.setText(_translate("MainWindow", "%"))
         self.pushButton_pc.setShortcut(_translate("MainWindow", "%"))
         self.pushButton_eq.setText(_translate("MainWindow", "="))
-        self.pushButton_eq.setShortcut(_translate("MainWindow", "Return"))
-        self.pushButton_eq.setShortcut(_translate("MainWindow", "Enter"))
+        for sequence in ("Enter", "Return", "=",):
+            shorcut = QtWidgets.QShortcut(sequence, self.pushButton_eq)
+            shorcut.activated.connect(self.pushButton_eq.animateClick)
         self.menuFIle.setTitle(_translate("MainWindow", "FIle"))
         self.actionExit.setText(_translate("MainWindow", "Exit"))
         self.actionExit.setShortcut(_translate("MainWindow", "Ctrl+Q"))

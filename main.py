@@ -216,7 +216,7 @@ class Desktop(QMainWindow):
 
 
 if __name__ == '__main__':
-    inputted_style = input("Please Enter a Style: ")
+    inputted_style = input("Please Enter a Style (Windows or Fusion): ")
 
     app = QApplication(sys.argv)
     ex = Desktop()
