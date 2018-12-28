@@ -9,6 +9,25 @@ import os
 import sys
 
 
+class IPDialog(QDialog):
+    def __init__(self, parent=None, *args, **kwargs):
+        super(IPDialog, self).__init__(*args, **kwargs)
+
+        self.layout = QFormLayout()
+        self.ip_input = QLineEdit()
+        self.button = QPushButton("Enter")
+        self.layout.addRow(self.button, self.ip_input)
+        self.button.clicked.connect(self.getText)
+
+    def getText(self):
+        text, ok = QInputDialog.getText(self, 'Text Input Dialog', "Enter the IP")
+
+        if ok:
+            self.ip_input.setText(str(text))
+            return str(text)
+
+
+
 class AboutDialog(QDialog):
     def __init__(self, *args, **kwargs):
         super(AboutDialog, self).__init__(*args, **kwargs)
@@ -46,8 +65,13 @@ class MainWindow(QMainWindow):
     def __init__(self, *args, **kwargs):
         super(MainWindow, self).__init__(*args, **kwargs)
 
-        proxyIP = input("Enter Proxy IP Adress: ")
-        proxyPort = input("Enter Proxy Port Number: ")
+        # Beggining of Proxy Grabber
+        getter = IPDialog()
+        text = getter.getText()
+        ip = text.split(":")
+        proxyIP = ip[0]
+        proxyPort = ip[1]
+        # End of Proxy Grabber
 
         try:
             int(proxyPort)

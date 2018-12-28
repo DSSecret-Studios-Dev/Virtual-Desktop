@@ -3,6 +3,7 @@ from PyQt5.QtGui import QIcon
 from PyQt5.QtGui import QPainter
 from PyQt5.QtGui import QPalette
 from PyQt5.QtGui import QPixmap
+# from PyQt5.QtGui import QDesktopWidget
 from PyQt5.QtCore import Qt
 
 import sys
@@ -131,8 +132,9 @@ class Desktop(QMainWindow):
 
         # self.width = int(input("Please input your computer screen's width (in pixels): "))
         # self.height = int(input("Please input your computer screen's height (in pixels): "))
-        self.width = 1920
-        self.height = 1080
+        self.screen = QDesktopWidget().screenGeometry()
+        self.width = self.screen.width()
+        self.height = self.screen.height()
 
         self.title = "Remote Desktop"
         self.left = 10
