@@ -10,7 +10,7 @@ import sys
 
 
 class IPDialog(QDialog):
-    def __init__(self, parent=None, *args, **kwargs):
+    def __init__(self, *args, **kwargs):
         super(IPDialog, self).__init__(*args, **kwargs)
 
         self.layout = QFormLayout()
@@ -20,12 +20,12 @@ class IPDialog(QDialog):
         self.button.clicked.connect(self.getText)
 
     def getText(self):
-        text, ok = QInputDialog.getText(self, 'Text Input Dialog', "Enter the IP")
+        text, ok = QInputDialog.getText(self, 'IP Input', "Enter the IP")
 
         if ok:
             self.ip_input.setText(str(text))
+            print(str(text))
             return str(text)
-
 
 
 class AboutDialog(QDialog):
@@ -174,7 +174,7 @@ class MainWindow(QMainWindow):
         navigate_mozarella_action.triggered.connect(self.navigate_mozarella)
         help_menu.addAction(navigate_mozarella_action)
 
-        self.add_new_tab(QUrl('http://www.google.com'), 'Homepage')
+        self.add_new_tab(QUrl('http://www.duckduckgo.com'), 'Homepage')
 
         self.show()
 
@@ -258,7 +258,7 @@ class MainWindow(QMainWindow):
         dlg.exec_()
 
     def navigate_home(self):
-        self.tabs.currentWidget().setUrl(QUrl("http://www.google.com"))
+        self.tabs.currentWidget().setUrl(QUrl("http://www.duckduckgo.com"))
 
     def navigate_to_url(self):  # Does not receive the Url
         q = QUrl(self.urlbar.text())
