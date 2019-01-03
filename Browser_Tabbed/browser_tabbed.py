@@ -133,7 +133,7 @@ class MainWindow(QMainWindow):
         navigate_mozarella_action.triggered.connect(self.navigate_mozarella)
         help_menu.addAction(navigate_mozarella_action)
 
-        self.add_new_tab(QUrl('http://www.duckduckgo.com'), 'Homepage')
+        self.add_new_tab(QUrl('http://start.duckduckgo.com'), 'Homepage')
 
         self.show()
 
@@ -217,7 +217,7 @@ class MainWindow(QMainWindow):
         dlg.exec_()
 
     def navigate_home(self):
-        self.tabs.currentWidget().setUrl(QUrl("http://www.duckduckgo.com"))
+        self.tabs.currentWidget().setUrl(QUrl("http://start.duckduckgo.com"))
 
     def navigate_to_url(self):  # Does not receive the Url
         q = QUrl(self.urlbar.text())

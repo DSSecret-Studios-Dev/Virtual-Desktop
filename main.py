@@ -3,7 +3,6 @@ from PyQt5.QtGui import QIcon
 from PyQt5.QtGui import QPainter
 from PyQt5.QtGui import QPalette
 from PyQt5.QtGui import QPixmap
-# from PyQt5.QtGui import QDesktopWidget
 from PyQt5.QtCore import Qt
 
 import sys
@@ -128,10 +127,6 @@ class Desktop(QMainWindow):
 
     def __init__(self):
         super(QMainWindow, self).__init__()
-        # Uncomment to Ask User Their Screen Resolution
-
-        # self.width = int(input("Please input your computer screen's width (in pixels): "))
-        # self.height = int(input("Please input your computer screen's height (in pixels): "))
         self.screen = QDesktopWidget().screenGeometry()
         self.width = self.screen.width()
         self.height = self.screen.height()
