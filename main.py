@@ -228,7 +228,7 @@ if __name__ == '__main__':
     else:
         print("""
 Invalid Style
-Valid Styles: Windows and Fusion""")
+Valid Styles: Windows, Fusion, and macintosh""")
         exit(1)
     app.setStyle(my_style)
     app.exec_()
