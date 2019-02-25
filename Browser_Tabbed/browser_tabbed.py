@@ -226,7 +226,16 @@ class MainWindow(QMainWindow):
         url = q.toString()
 
         if not url_validator.url_check(url):
-            q = QUrl("https://dssecret.github.io/redirect.html")
+            url2 = []
+
+            for char in url:
+                if char == " ":
+                    url2.append("+")
+                else:
+                    url2.append(char)
+            url2 = "".join(url2)
+
+            q = QUrl("https://duckduckgo.com/?q=" + url2)
 
         if q.scheme() == "":
             q.setScheme("http")
