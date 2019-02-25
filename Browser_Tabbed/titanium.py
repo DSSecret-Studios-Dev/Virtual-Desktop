@@ -67,7 +67,6 @@ class MainWindow(QMainWindow):
 
         text, ok = QInputDialog.getText(self, 'IP Input', "Enter the IP")
         if ok:
-            self.ip_input.setText(str(text))
             ip = text.split(":")
             proxyIP = ip[0]
             proxyPort = ip[1]
