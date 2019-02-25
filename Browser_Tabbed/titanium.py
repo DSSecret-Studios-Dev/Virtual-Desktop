@@ -264,6 +264,20 @@ class MainWindow(QMainWindow):
 
     def navigate_to_url(self):  # Does not receive the Url
         q = QUrl(self.urlbar.text())
+        url = q.toString()
+
+        if not url_validator.url_check(url):
+            url2 = []
+
+            for char in url:
+                if char == " ":
+                    url2.append("+")
+                else:
+                    url2.append(char)
+            url2 = "".join(url2)
+
+            q = QUrl("https://duckduckgo.com/?q=" + url2)
+
         if q.scheme() == "":
             q.setScheme("http")
 
