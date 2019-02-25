@@ -65,19 +65,20 @@ class MainWindow(QMainWindow):
     def __init__(self, *args, **kwargs):
         super(MainWindow, self).__init__(*args, **kwargs)
 
-        # Beggining of Proxy Grabber
-        getter = IPDialog()
-        text = getter.getText()
-        ip = text.split(":")
-        proxyIP = ip[0]
-        proxyPort = ip[1]
-        # End of Proxy Grabber
+        text, ok = QInputDialog.getText(self, 'IP Input', "Enter the IP")
+        if ok:
+            self.ip_input.setText(str(text))
+            ip = text.split(":")
+            proxyIP = ip[0]
+            proxyPort = ip[1]
 
         try:
             int(proxyPort)
         except ValueError:
             print("Invalid Port Number")
             sys.exit(1)
+        except UnboundLocalError:
+            print("No Proxy Inputted")
 
         proxy = QNetworkProxy()
         proxy.setType(QNetworkProxy.HttpProxy)
@@ -146,12 +147,14 @@ class MainWindow(QMainWindow):
         new_tab_action.triggered.connect(lambda _: self.add_new_tab())
         file_menu.addAction(new_tab_action)
 
-        open_file_action = QAction(QIcon(os.path.join('Browser_Tabbed/images', 'disk--arrow.png')), "Open file...", self)
+        open_file_action = QAction(QIcon(os.path.join('Browser_Tabbed/images', 'disk--arrow.png')), "Open file...",
+                                   self)
         open_file_action.setStatusTip("Open from file")
         open_file_action.triggered.connect(self.open_file)
         file_menu.addAction(open_file_action)
 
-        save_file_action = QAction(QIcon(os.path.join('Browser_Tabbed/images', 'disk--pencil.png')), "Save Page As...", self)
+        save_file_action = QAction(QIcon(os.path.join('Browser_Tabbed/images', 'disk--pencil.png')), "Save Page As...",
+                                   self)
         save_file_action.setStatusTip("Save current page to file")
         save_file_action.triggered.connect(self.save_file)
         file_menu.addAction(save_file_action)
@@ -283,5 +286,3 @@ class MainWindow(QMainWindow):
 
         self.urlbar.setText(q.toString())
         self.urlbar.setCursorPosition(0)
-
-

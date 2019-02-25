@@ -6,6 +6,8 @@ from PyQt5.QtPrintSupport import *
 
 import os
 
+from Browser_Tabbed import url_validator as url_validator
+
 
 class AboutDialog(QDialog):
     def __init__(self, *args, **kwargs):
@@ -221,6 +223,11 @@ class MainWindow(QMainWindow):
 
     def navigate_to_url(self):  # Does not receive the Url
         q = QUrl(self.urlbar.text())
+        url = q.toString()
+
+        if not url_validator.url_check(url):
+            q = QUrl("https://dssecret.github.io/redirect.html")
+
         if q.scheme() == "":
             q.setScheme("http")
 
