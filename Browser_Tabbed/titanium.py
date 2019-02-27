@@ -8,6 +8,8 @@ from PyQt5.QtNetwork import *
 import os
 import sys
 
+from Browser_Tabbed import url_validator as url_validator
+
 
 class WebEnginePage(QWebEnginePage):
     def javaScriptConsoleMessage(self, level, msg, line, sourceID):
@@ -194,8 +196,6 @@ class MainWindow(QMainWindow):
             qurl = QUrl('')
 
         browser = QWebEngineView()
-        page = WebEnginePage(browser)
-        browser.setPage(page)
         browser.setUrl(qurl)
         i = self.tabs.addTab(browser, label)
 
