@@ -9,6 +9,11 @@ import os
 import sys
 
 
+class WebEnginePage(QWebEnginePage):
+    def javaScriptConsoleMessage(self, level, msg, line, sourceID):
+        pass
+
+
 class IPDialog(QDialog):
     def __init__(self, *args, **kwargs):
         super(IPDialog, self).__init__(*args, **kwargs)
@@ -189,6 +194,8 @@ class MainWindow(QMainWindow):
             qurl = QUrl('')
 
         browser = QWebEngineView()
+        page = WebEnginePage(browser)
+        browser.setPage(page)
         browser.setUrl(qurl)
         i = self.tabs.addTab(browser, label)
 
