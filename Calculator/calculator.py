@@ -42,7 +42,10 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.show()
 
     def display(self):
-        self.lcdNumber.display(self.stack[-1])
+        if not -2147483648 <= self.stack[-1] <= 2147483647:
+            self.lcdNumber.display(0)
+        else:
+            self.lcdNumber.display(self.stack[-1])
 
     def reset(self):
         self.state = READY
@@ -52,7 +55,11 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.display()
 
     def memory_store(self):
-        self.memory = self.lcdNumber.value()
+        if not -2147483648 <= self.stack[-1] <= 2147483647:
+            self.lcdNumber.display(0)
+            self.memory = 0
+        else:
+            self.memory = self.lcdNumber.value()
 
     def memory_recall(self):
         self.state = INPUT
