@@ -14,6 +14,7 @@ from Calculator import calculator
 from Notepad import notepad
 from Paint import paint
 from Solitaire import solitaire
+import proxy_closest_match
 
 
 class MDIArea(QMdiArea):
@@ -221,10 +222,10 @@ if __name__ == '__main__':
     app = QApplication(sys.argv)
     ex = Desktop()
     my_style = None
-    if inputted_style in available_styles:
-        my_style = MyProxyStyle(inputted_style)
-    elif inputted_style == "":
+    if inputted_style == "":
         my_style = MyProxyStyle("")
+    elif proxy_closest_match.closest_match(inputted_style) is not None:
+        my_style = MyProxyStyle(proxy_closest_match.closest_match(inputted_style))
     else:
         print("""
 Invalid Style
